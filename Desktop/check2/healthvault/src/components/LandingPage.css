@@ -1,0 +1,113 @@
+/* Hero Section Background */
+.hero-section {
+  background-color: #F8F9FA; /* soft light background */
+  background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
+  background-repeat: repeat;
+}
+
+/* Floating Animation */
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Image Styling */
+.doodle-img {
+  max-width: 90%;
+  height: auto;
+  opacity: 0.95;
+}
+
+/* Headline Entrance Animation */
+.animate-pop {
+  animation: pop-in 1s ease-out;
+}
+
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Footer Link Styling */
+.footer-link {
+  color: #ADB5BD;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 5px;
+  transition: all 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+/* Navbar Branding */
+.navbar-brand {
+  color: #0077B6 !important;
+}
+
+/* Navbar Links */
+.nav-link {
+  color: #212529 !important;
+}
+.nav-link:hover {
+  color: #00B4D8 !important;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #0077B6;
+  border-color: #0077B6;
+}
+.btn-primary:hover {
+  background-color: #005f87;
+  border-color: #005f87;
+}
+
+.btn-outline-dark:hover {
+  background-color: #00B4D8;
+  border-color: #00B4D8;
+  color: white;
+}
+
+/* Footer */
+.footer {
+  background: linear-gradient(to right, #03045E, #0077B6);
+  color: #ADB5BD;
+}
+.footer h4, .footer h6 {
+  color: white;
+}
+.hero-title {
+  color: #03045E;
+  transition: color 0.3s ease, transform 0.3s ease;
+  cursor: default;
+}
+
+.hero-title:hover {
+  color: #023E8A;
+  transform: translateY(-3px);
+}
+
+.hero-highlight {
+  color: #00B4D8;
+  transition: color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+
+.hero-highlight:hover {
+  color: #90E0EF;
+  transform: scale(1.05);
+}
