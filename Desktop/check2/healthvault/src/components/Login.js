@@ -28,6 +28,8 @@ const Login = () => {
       const response = await authService.login(formData);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data));
+      localStorage.setItem("userID", response.data.id);
+
       navigate('/dashboard');
     } catch (error) {
       setError(error.response?.data?.message || 'Error during login');

@@ -10,6 +10,7 @@ const {
   updateProfile,
   changePassword,
   getLoginHistory,
+  getUserProfile,
   verifyEmail
 } = require('../controllers/userController');
 const nodemailer = require('nodemailer');
@@ -45,11 +46,12 @@ router.use((req, res, next) => {
 });
 /////////////
 // Protected routes
-router.put('/profile', protect, updateProfile);
+router.put('/profile', updateProfile);
 router.put('/change-password', protect, changePassword);
 router.get('/login-history', protect, getLoginHistory);
 router.get('/search', protect, getUserByEmail);
 router.get('/', protect, getUsers);
+router.get("/profile", getUserProfile);
 
 // Add this route temporarily for testing email configuration
 router.get('/test-email', async (req, res) => {
@@ -72,4 +74,4 @@ router.get('/test-email', async (req, res) => {
   }
 });
 
-module.exports = router; 
+module.exports = router;

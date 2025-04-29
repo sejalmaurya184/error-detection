@@ -39,5 +39,6 @@ export const recordService = {
 export const userService = {
   updateProfile: (userData) => api.put('/users/profile', userData),
   changePassword: (passwordData) => api.put('/users/change-password', passwordData),
-  getLoginHistory: () => api.get('/users/login-history')
+  getLoginHistory: () => api.get('/users/login-history'),
+  getUserProfile: () => api.get('/users/profile')
 }; 

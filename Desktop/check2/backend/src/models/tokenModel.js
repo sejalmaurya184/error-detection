@@ -12,16 +12,6 @@ const CREATE_TOKENS_TABLE = `
   )
 `;
 
-// const initializeTokenTable = async () => {
-//   try {
-//     await pool.query(CREATE_TOKENS_TABLE);
-//     console.log('Tokens table initialized');
-//   } catch (error) {
-//     console.error('Error initializing tokens table:', error);
-//     throw error;
-//   }
-// };
-const { initializeTokenTable } = require('./src/models/tokenModel');
 
 const initializeDatabase = async () => {
   try {
@@ -31,6 +21,18 @@ const initializeDatabase = async () => {
     console.error('Error initializing database:', error);
   }
 };
+const initializeTokenTable = async () => {
+  try {
+    await pool.query(CREATE_TOKENS_TABLE);
+    console.log('Tokens table initialized');
+  } catch (error) {
+    console.error('Error initializing tokens table:', error);
+    throw error;
+  }
+};
+
 
 initializeDatabase();
-module.exports = { initializeTokenTable }; 
+
+module.exports = { initializeTokenTable , initializeDatabase
+};

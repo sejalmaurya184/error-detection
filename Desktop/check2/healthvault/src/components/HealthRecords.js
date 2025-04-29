@@ -2,12 +2,17 @@ import React, { useState, useEffect } from "react";
 
 const HealthRecords = () => {
   const [records, setRecords] = useState([]);
+  const [user, setUser] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showNewModal, setShowNewModal] = useState(false);
   const [editingRecord, setEditingRecord] = useState(null);
   const [formData, setFormData] = useState({ name: "", date: "", type: "", content: null });
 
   useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); // Parse and set user details
+    }
     const dummyRecords = [
       {
         id: 1,
@@ -75,7 +80,7 @@ const HealthRecords = () => {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Normalize to midnight
 
-    if (selectedDate > today) {
+    if (selectedDate > today+1) {
       alert("Cannot select a future date for health records.");
       return;
     }
@@ -147,7 +152,7 @@ const HealthRecords = () => {
     <h2 className="fw-bold mb-0 text-primary">
       <i className="bi bi-journal-medical me-2" />Health Records
     </h2>
-    <p className="text-muted">Hello, Ravi Mehta 👋 Here’s your health data overview</p>
+    <p className="text-muted">Hello, {user ? user.name : "Loading..."} 👋 Here’s your health data overview</p>
   </div>
 
   <div className="d-flex justify-content-end mb-3">

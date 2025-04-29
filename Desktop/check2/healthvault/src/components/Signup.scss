@@ -1,0 +1,135 @@
+/* General body styling */
+/* Reserve space for conditional fields */
+.patient-fields,
+.doctor-fields {
+  display: none; /* Hide by default */
+  visibility: hidden; /* Keep the space reserved */
+  height: 0; /* Prevent layout shift */
+  overflow: hidden;
+}
+
+.patient-fields.active,
+.doctor-fields.active {
+  display: block; /* Show when active */
+  visibility: visible; /* Make visible */
+  height: auto; /* Adjust height dynamically */
+  overflow: visible;
+}
+
+body {
+  background-color: #f8f9fa; /* Light background */
+  font-family: 'Arial', sans-serif;
+}
+
+
+/* Container for the signup form */
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+/* Card styling for the form */
+.signup-card {
+  width: 100%;
+  max-width: 500px;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Add space between fields */
+}
+
+/* Form heading */
+.signup-card h3 {
+  color: #007bff;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Label styling */
+.signup-card .form-label {
+  font-weight: bold;
+  color: #495057;
+}
+
+/* Input field styling */
+.signup-card .form-control {
+  border-radius: 5px;
+  border: 1px solid #ced4da;
+  padding: 0.75rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Input field focus effect */
+.signup-card .form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+}
+
+/* Button styling */
+.signup-card .btn-primary {
+  background-color: #007bff;
+  border: none;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+/* Button hover effect */
+.signup-card .btn-primary:hover {
+  background-color: #0056b3;
+}
+
+/* Disabled button styling */
+.signup-card .btn-primary:disabled {
+  background-color: #d6d6d6;
+  cursor: not-allowed;
+}
+
+/* Error alert styling */
+.signup-card .alert {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+/* Text below the form */
+.signup-card .text-center {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+/* Link styling */
+.signup-card .text-center a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+/* Link hover effect */
+.signup-card .text-center a:hover {
+  text-decoration: underline;
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 576px) {
+  .signup-card {
+    padding: 1.5rem;
+    margin-top: 1rem;
+  }
+  .signup-card h3 {
+    font-size: 1.5rem;
+  }
+}

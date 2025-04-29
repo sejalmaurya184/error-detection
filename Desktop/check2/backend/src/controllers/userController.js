@@ -34,9 +34,26 @@ const isEmailDomainValid = async (email) => {
 // @access  Public
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    console.log('Received registration request for:', email);
+    // const { name, email, password } = req.body;
 
+    const {
+      name,
+      age,
+      gender,
+      height,
+      weight,
+      phone,
+      motherName,
+      fatherName,
+      password,
+      email,
+      specialization,
+      licenseNumber,
+      clinicName,
+      experience,
+      location
+    } = req.body;
+     console.log('Received registration request for:', email);
     // Validate input
     if (!name || !email || !password) {
       return res.status(400).json({
@@ -69,10 +86,17 @@ const registerUser = async (req, res) => {
 
     try {
       // Create user
+      // const [userResult] = await connection.query(
+      //   'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
+      //   [name, email, hashedPassword]
+      // );
+      
+      // Save user to the database
       const [userResult] = await connection.query(
-        'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
-        [name, email, hashedPassword]
-      );
+      `INSERT INTO users (name, age, gender, height, weight, phone, motherName, fatherName, password, email, specialization, licenseNumber, clinicName, experience, location)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [name, age, gender, height, weight, phone, motherName, fatherName, hashedPassword, email, specialization, licenseNumber, clinicName, experience, location]
+    );
 
       const userId = userResult.insertId;
 
@@ -164,7 +188,9 @@ const getUserByEmail = async (req, res) => {
     }
 
     const [user] = await pool.query(
-      'SELECT id, name, email, createdAt FROM users WHERE email = ?',
+      `SELECT name, email, age, gender, height, weight, phone, motherName, fatherName 
+       FROM users 
+       WHERE id = ?`,
       [email]
     );
 
@@ -187,7 +213,22 @@ const getUserByEmail = async (req, res) => {
 const updateProfile = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { name, email } = req.body;
+    const {
+      name,
+      email,
+      age,
+      gender,
+      height,
+      weight,
+      phone,
+      motherName,
+      fatherName,
+      specialization,
+      licenseNumber,
+      clinicName,
+      experience,
+      location
+    } = req.body;
 
     // Check if email already exists for another user
     if (email) {
@@ -202,10 +243,29 @@ const updateProfile = async (req, res) => {
 
     // Update user profile
     await pool.query(
-      'UPDATE users SET name = ?, email = ? WHERE id = ?',
-      [name, email, userId]
+      `UPDATE users 
+       SET name = ?, email = ?, age = ?, gender = ?, height = ?, weight = ?, phone = ?, 
+           motherName = ?, fatherName = ?, specialization = ?, licenseNumber = ?, 
+           clinicName = ?, experience = ?, location = ? 
+       WHERE id = ?`,
+      [
+        name,
+        email,
+        age,
+        gender,
+        height,
+        weight,
+        phone,
+        motherName,
+        fatherName,
+        specialization,
+        licenseNumber,
+        clinicName,
+        experience,
+        location,
+        userId
+      ]
     );
-
     // Get updated user info
     const [updatedUser] = await pool.query(
       'SELECT id, name, email FROM users WHERE id = ?',
@@ -284,6 +344,12 @@ const getLoginHistory = async (req, res) => {
     });
   }
 };
+// Function to generate a JWT token
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET || 'your-secret-key', {
+    expiresIn: '30d', // Token expires in 30 days
+  });
+};
 
 // @desc    Login user
 // @route   POST /api/users/login
@@ -317,27 +383,27 @@ const loginUser = async (req, res) => {
     const user = users[0];
 
     // Check password
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid =  await bcrypt.compare(password,user.password);
     if (!isPasswordValid) {
       return res.status(401).json({
         message: 'Invalid email or password'
       });
     }
-
+    
     // Check if email is verified
     if (!user.isEmailVerified) {
       return res.status(401).json({
         message: 'Please verify your email before logging in'
       });
     }
-
+    const token = generateToken(user.id);
     // Generate token
-    const token = jwt.sign(
-      { id: user.id, email: user.email },
-      process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '1h' }
-    );
-
+    // const token = jwt.sign(
+    //   { id: user.id, email: user.email },
+    //   process.env.JWT_SECRET || 'your-secret-key',
+    //   { expiresIn: '1h' }
+    // );
+    
     res.status(200).json({
       id: user.id,
       name: user.name,
@@ -413,13 +479,45 @@ const verifyEmail = async (req, res) => {
   }
 };
 
+// @desc    Get logged-in user's profile
+// @route   GET /api/users/profile
+// @access  Private
+const getUserProfile = async (req, res) => {
+  try {
+    const userId = req.query.userID; // Retrieve userID from query parameters
+
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    // Fetch user data from the database
+    const [users] = await pool.query(
+      `SELECT name, email, age, gender, height, weight, phone, motherName, fatherName 
+       FROM users 
+       WHERE id = ?`,
+      [userId]
+    );
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(users[0]); // Return the user's profile
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    res.status(500).json({ message: "Error fetching user profile" });
+  }
+};
+
 module.exports = {
   registerUser,
+  generateToken,
   getUsers,
   getUserByEmail,
   loginUser,
   updateProfile,
   changePassword,
   getLoginHistory,
-  verifyEmail
-}; 
+  verifyEmail,
+  getUserProfile
+};
